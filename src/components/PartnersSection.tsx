@@ -32,7 +32,7 @@ const PartnersSection = () => {
         <div className="flex items-center animate-marquee w-max gap-16 px-8">
           {doubled.map((p, i) => (
             <div key={i} className="flex-shrink-0 flex items-center justify-center h-20 w-40">
-              <img src={p.src} alt={p.name} className="max-h-16 max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300" />
+              <img src={p.src} alt={p.name} className="max-h-16 max-w-full object-contain" />
             </div>
           ))}
         </div>
