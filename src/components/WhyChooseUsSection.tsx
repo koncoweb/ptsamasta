@@ -48,7 +48,7 @@ const WhyChooseUsSection = () => {
         <div className="text-center mb-14 max-w-2xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">Mengapa Memilih Kami?</h2>
           <p className="text-lg font-semibold text-navy mt-2">Spesialisasi Oleh PT Samasta Nusantara Digdaya</p>
-          <p className="text-muted-foreground mt-3 text-sm">Kami hadir sebagai mitra strategis yang menyediakan solusi bisnis terintegrasi dengan pendekatan one-stop solution.
+          <p className="text-muted-foreground mt-3 text-center text-base">Kami hadir sebagai mitra strategis yang menyediakan solusi bisnis terintegrasi dengan pendekatan one-stop solution.
 
           </p>
         </div>
