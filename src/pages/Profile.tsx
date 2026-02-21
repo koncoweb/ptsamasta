@@ -8,12 +8,12 @@ import LegalitasPage from "@/components/profile/LegalitasPage";
 import KeunggulanPage from "@/components/profile/KeunggulanPage";
 
 const subPages = [
-  { key: "tentang-kami", label: "Tentang Kami" },
-  { key: "struktur-manajemen", label: "Struktur Manajemen" },
-  { key: "sejarah", label: "Sejarah" },
-  { key: "legalitas", label: "Legalitas & Perizinan" },
-  { key: "keunggulan", label: "Keunggulan" },
-];
+{ key: "tentang-kami", label: "Tentang Kami" },
+{ key: "struktur-manajemen", label: "Struktur Manajemen" },
+{ key: "sejarah", label: "Sejarah" },
+{ key: "legalitas", label: "Legalitas & Perizinan" },
+{ key: "keunggulan", label: "Keunggulan" }];
+
 
 const Profile = () => {
   const { subPage } = useParams();
@@ -73,19 +73,19 @@ const Profile = () => {
       <div className="bg-card border-b border-border sticky top-16 z-40">
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto gap-1 py-1 scrollbar-hide">
-            {subPages.map((tab) => (
-              <Link
-                key={tab.key}
-                to={`/profil/${tab.key}`}
-                className={`whitespace-nowrap px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
-                  activeTab === tab.key
-                    ? "bg-[#1E3A8A] text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                }`}
-              >
-                {tab.label}
-              </Link>
-            ))}
+            {subPages.map((tab) => {}
+
+
+
+
+
+
+
+
+
+
+
+            )}
           </div>
         </div>
       </div>
@@ -94,8 +94,8 @@ const Profile = () => {
       <main>{renderContent()}</main>
 
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default Profile;
