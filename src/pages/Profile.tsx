@@ -47,27 +47,27 @@ const Profile = () => {
       <Navbar />
 
       {/* Hero Banner */}
-      
+      <section className="relative bg-gradient-to-br from-[#1E3A8A] via-[#1D4ED8] to-[#1E3A8A] pt-24 pb-12">
+        <div className="container mx-auto px-4 text-center">
+          {/* Breadcrumb */}
+          <div className="flex items-center justify-start gap-2 text-sm text-primary-foreground/60 mb-6">
+            <Link to="/" className="hover:text-gold transition-colors">Beranda</Link>
+            <span>/</span>
+            <span className="text-primary-foreground/80">Profil Perusahaan</span>
+            <span>/</span>
+            <span className="text-primary-foreground">
+              {subPages.find((s) => s.key === activeTab)?.label}
+            </span>
+          </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <h1 className="text-3xl md:text-4xl font-extrabold text-primary-foreground mb-4">
+            PT Samasta Nusantara Digdaya
+          </h1>
+          <p className="text-primary-foreground/70 text-sm">
+            Dipercaya oleh Platform Pengadaan Terkemuka
+          </p>
+        </div>
+      </section>
 
       {/* Sub-navigation tabs */}
       <div className="bg-card border-b border-border sticky top-16 z-40">
