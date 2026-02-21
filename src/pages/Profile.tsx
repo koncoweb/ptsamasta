@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TentangKami from "@/components/profile/TentangKami";
@@ -9,21 +8,28 @@ import LegalitasPage from "@/components/profile/LegalitasPage";
 import KeunggulanPage from "@/components/profile/KeunggulanPage";
 
 const subPages = [
-  { key: "tentang", label: "Tentang Kami" },
-  { key: "struktur", label: "Struktur Manajemen" },
+  { key: "tentang-kami", label: "Tentang Kami" },
+  { key: "struktur-manajemen", label: "Struktur Manajemen" },
   { key: "sejarah", label: "Sejarah" },
   { key: "legalitas", label: "Legalitas & Perizinan" },
   { key: "keunggulan", label: "Keunggulan" },
 ];
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("tentang");
+  const { subPage } = useParams();
+
+  // Default redirect to tentang-kami
+  if (!subPage) {
+    return <Navigate to="/profil/tentang-kami" replace />;
+  }
+
+  const activeTab = subPage;
 
   const renderContent = () => {
     switch (activeTab) {
-      case "tentang":
+      case "tentang-kami":
         return <TentangKami />;
-      case "struktur":
+      case "struktur-manajemen":
         return <StrukturManajemen />;
       case "sejarah":
         return <SejarahPage />;
@@ -68,9 +74,9 @@ const Profile = () => {
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto gap-1 py-1 scrollbar-hide">
             {subPages.map((tab) => (
-              <button
+              <Link
                 key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
+                to={`/profil/${tab.key}`}
                 className={`whitespace-nowrap px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
                   activeTab === tab.key
                     ? "bg-[#1E3A8A] text-primary-foreground"
@@ -78,7 +84,7 @@ const Profile = () => {
                 }`}
               >
                 {tab.label}
-              </button>
+              </Link>
             ))}
           </div>
         </div>
