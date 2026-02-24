@@ -1,23 +1,11 @@
 import { Award, ShieldCheck, Users, TrendingUp, Eye, Scale, Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
+import faniPhoto from "@/assets/komisaris/fani-ruusul.png";
+import ahmadPhoto from "@/assets/komisaris/ahmad-shaleh.png";
 
 const StrukturManajemen = () => {
   return (
     <div>
-      {/* Hero */}
-      <section className="py-16 bg-gradient-to-br from-[#1E3A8A] via-[#1D4ED8] to-[#1E3A8A] text-primary-foreground">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <div className="inline-block bg-primary-foreground/10 text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full mb-4">
-            Manajemen & Kepemimpinan
-          </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-3">
-            Susunan Direksi & Komisaris
-          </h2>
-          <p className="text-primary-foreground/70 text-sm">
-            Kepemimpinan Berpengalaman yang Mengarahkan PT Samasta Nusantara Digdaya Menuju Kesuksesan
-          </p>
-        </div>
-      </section>
-
       {/* Kepemimpinan Visioner */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -44,24 +32,30 @@ const StrukturManajemen = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Komisaris Utama */}
             <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <div className="w-24 h-24 rounded-full bg-[#1E3A8A]/10 mx-auto mb-4 flex items-center justify-center">
-                <Users size={40} className="text-[#1E3A8A]" />
+              <div className="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden border-4 border-[#1E3A8A]/20">
+                <img src={faniPhoto} alt="Fani Ruusul Masail" className="w-full h-full object-cover" />
               </div>
               <h4 className="font-bold text-foreground">Fani Ruusul Masail, S.H., M.H.</h4>
-              <span className="inline-block mt-2 bg-[#1E3A8A] text-primary-foreground text-xs font-medium px-3 py-1 rounded-full">
+              <Link
+                to="/profil/komisaris-utama"
+                className="inline-block mt-2 bg-[#1E3A8A] text-primary-foreground text-xs font-medium px-4 py-1.5 rounded-full hover:bg-[#1D4ED8] transition-colors cursor-pointer"
+              >
                 Komisaris Utama
-              </span>
+              </Link>
             </div>
 
             {/* Komisaris */}
             <div className="bg-card border border-border rounded-xl p-6 text-center">
-              <div className="w-24 h-24 rounded-full bg-[#1E3A8A]/10 mx-auto mb-4 flex items-center justify-center">
-                <Users size={40} className="text-[#1E3A8A]" />
+              <div className="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden border-4 border-[#1E3A8A]/20">
+                <img src={ahmadPhoto} alt="H. Dr. Ahmad Shaleh Amin" className="w-full h-full object-cover" />
               </div>
               <h4 className="font-bold text-foreground">H. Dr. Ahmad Shaleh Amin, Lc., MA</h4>
-              <span className="inline-block mt-2 bg-[#1D4ED8] text-primary-foreground text-xs font-medium px-3 py-1 rounded-full">
+              <Link
+                to="/profil/komisaris"
+                className="inline-block mt-2 bg-[#1D4ED8] text-primary-foreground text-xs font-medium px-4 py-1.5 rounded-full hover:bg-[#1E3A8A] transition-colors cursor-pointer"
+              >
                 Komisaris
-              </span>
+              </Link>
             </div>
           </div>
         </div>
