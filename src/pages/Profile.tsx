@@ -6,24 +6,47 @@ import StrukturManajemen from "@/components/profile/StrukturManajemen";
 import SejarahPage from "@/components/profile/SejarahPage";
 import LegalitasPage from "@/components/profile/LegalitasPage";
 import KeunggulanPage from "@/components/profile/KeunggulanPage";
+import KomisarisUtamaDetail from "@/components/profile/KomisarisUtamaDetail";
+import KomisarisDetail from "@/components/profile/KomisarisDetail";
+import buildingBg from "@/assets/building-bg.jpg";
 
 const subPages = [
-{ key: "tentang-kami", label: "Tentang Kami" },
-{ key: "struktur-manajemen", label: "Struktur Manajemen" },
-{ key: "sejarah", label: "Sejarah" },
-{ key: "legalitas", label: "Legalitas & Perizinan" },
-{ key: "keunggulan", label: "Keunggulan" }];
-
+  { key: "tentang-kami", label: "Tentang Kami" },
+  { key: "struktur-manajemen", label: "Struktur Manajemen" },
+  { key: "sejarah", label: "Sejarah" },
+  { key: "legalitas", label: "Legalitas & Perizinan" },
+  { key: "keunggulan", label: "Keunggulan" },
+];
 
 const Profile = () => {
   const { subPage } = useParams();
 
-  // Default redirect to tentang-kami
   if (!subPage) {
     return <Navigate to="/profil/tentang-kami" replace />;
   }
 
   const activeTab = subPage;
+
+  // Detail pages for komisaris
+  if (activeTab === "komisaris-utama") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main><KomisarisUtamaDetail /></main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (activeTab === "komisaris") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main><KomisarisDetail /></main>
+        <Footer />
+      </div>
+    );
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -46,26 +69,39 @@ const Profile = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Banner */}
-      <section className="relative bg-gradient-to-br from-[#1E3A8A] via-[#1D4ED8] to-[#1E3A8A] pt-24 pb-12">
-        <div className="container mx-auto px-4 text-center">
+      {/* Hero Banner with building background */}
+      <section className="relative pt-24 pb-16 overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <img src={buildingBg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[#1E3A8A]/85" />
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
           {/* Breadcrumb */}
           <div className="flex items-center justify-start gap-2 text-sm text-primary-foreground/60 mb-6">
             <Link to="/" className="hover:text-gold transition-colors">Beranda</Link>
-            <span>/</span>
-            <span className="text-primary-foreground/80">Profil Perusahaan</span>
-            <span>/</span>
+            <span>&gt;</span>
+            <span className="text-primary-foreground/80">Profil</span>
+            <span>&gt;</span>
             <span className="text-primary-foreground">
               {subPages.find((s) => s.key === activeTab)?.label}
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold text-primary-foreground mb-4">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-primary-foreground mb-4">
             PT Samasta Nusantara Digdaya
           </h1>
           <p className="text-primary-foreground/70 text-sm">
             Dipercaya oleh Platform Pengadaan Terkemuka
           </p>
+        </div>
+
+        {/* Wave bottom */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+            <path d="M0,80 C360,120 720,0 1440,80 L1440,120 L0,120 Z" fill="hsl(var(--background))" />
+          </svg>
         </div>
       </section>
 
@@ -73,19 +109,19 @@ const Profile = () => {
       <div className="bg-card border-b border-border sticky top-16 z-40">
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto gap-1 py-1 scrollbar-hide">
-            {subPages.map((tab) => {}
-
-
-
-
-
-
-
-
-
-
-
-            )}
+            {subPages.map((tab) => (
+              <Link
+                key={tab.key}
+                to={`/profil/${tab.key}`}
+                className={`whitespace-nowrap px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                  activeTab === tab.key
+                    ? "bg-[#1E3A8A] text-primary-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                {tab.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -94,8 +130,8 @@ const Profile = () => {
       <main>{renderContent()}</main>
 
       <Footer />
-    </div>);
-
+    </div>
+  );
 };
 
 export default Profile;
