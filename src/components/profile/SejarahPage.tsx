@@ -1,26 +1,8 @@
 import { BookOpen, Globe, Shield, Calendar, Building2, MapPin } from "lucide-react";
-import buildingBg from "@/assets/building-bg.jpg";
 
 const SejarahPage = () => {
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={buildingBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[#1E3A8A]/90" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
-              Sejarah dan Filosofi Perusahaan
-            </h1>
-            <p className="text-white/70 text-sm">
-              Landasan nilai dan perjalanan PT Samasta Nusantara Digdaya
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Sejarah Section */}
       <section className="py-16 bg-background">

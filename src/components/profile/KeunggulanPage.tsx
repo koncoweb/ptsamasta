@@ -1,5 +1,4 @@
 import { Scale, Users, Briefcase, ClipboardCheck, Lightbulb, Shield, Clock, FileCheck, Eye, Award } from "lucide-react";
-import buildingBg from "@/assets/building-bg.jpg";
 
 const keunggulanItems = [
   {
@@ -15,32 +14,32 @@ const keunggulanItems = [
   {
     icon: Users,
     title: "3. Sumber Daya Manusia yang Kompeten",
-    description: "Perseroan didukung oleh tenaga profesional yang memiliki latar belakang pendidikan, keahlian teknis, dan pengalaman kerja yang relevan di berbagai bidang usaha. Kompetensi sumber daya manusia ini menjadi modal utama dalam menjalankan proyek secara efektif, adaptif, dan berorientasi pada hasil.",
+    description: "Perseroan didukung oleh tenaga profesional yang memiliki latar belakang pendidikan, keahlian teknis, dan pengalaman kerja yang relevan di berbagai bidang usaha.",
   },
   {
     icon: ClipboardCheck,
     title: "4. Pemahaman Komprehensif terhadap Kebutuhan Proyek",
-    description: "PT Samasta Nusantara Digdaya memiliki kemampuan untuk memahami kebutuhan klien secara menyeluruh, termasuk aspek teknis, administratif, dan regulasi. Pemahaman ini memungkinkan Perseroan untuk menyusun solusi yang tepat sasaran, sesuai kebutuhan, dan dapat dipertanggungjawabkan.",
+    description: "PT Samasta Nusantara Digdaya memiliki kemampuan untuk memahami kebutuhan klien secara menyeluruh, termasuk aspek teknis, administratif, dan regulasi.",
   },
   {
     icon: Lightbulb,
     title: "5. Solusi yang Disesuaikan dengan Kebutuhan Klien",
-    description: "Setiap proyek ditangani dengan pendekatan yang disesuaikan berdasarkan karakteristik kebutuhan klien. Perseroan tidak menggunakan pendekatan satu solusi untuk semua, melainkan merancang strategi pelaksanaan yang spesifik guna mencapai hasil yang optimal dan bernilai tambah bagi setiap pemangku kepentingan.",
+    description: "Setiap proyek ditangani dengan pendekatan yang disesuaikan berdasarkan karakteristik kebutuhan klien.",
   },
   {
     icon: Award,
     title: "6. Komitmen terhadap Kualitas dan Ketepatan Waktu",
-    description: "Kualitas hasil kerja dan ketepatan waktu penyelesaian merupakan dua pilar utama yang dijunjung tinggi oleh Perseroan. Setiap proyek dikelola dengan target yang terukur dan mekanisme pengawasan internal yang ketat untuk memastikan bahwa standar mutu dan jadwal pelaksanaan terpenuhi secara konsisten.",
+    description: "Kualitas hasil kerja dan ketepatan waktu penyelesaian merupakan dua pilar utama yang dijunjung tinggi oleh Perseroan.",
   },
   {
     icon: FileCheck,
     title: "7. Kepatuhan terhadap Regulasi dan Standar yang Berlaku",
-    description: "Perseroan berkomitmen untuk menjalankan seluruh kegiatan usahanya sesuai dengan peraturan perundang-undangan yang berlaku, termasuk standar pengadaan barang dan jasa pemerintah, regulasi perpajakan, serta ketentuan administrasi lainnya. Kepatuhan ini mencerminkan integritas dan keseriusan Perseroan dalam menjaga kredibilitas usahanya.",
+    description: "Perseroan berkomitmen untuk menjalankan seluruh kegiatan usahanya sesuai dengan peraturan perundang-undangan yang berlaku.",
   },
   {
     icon: Eye,
     title: "8. Transparansi dan Akuntabilitas",
-    description: "Dalam setiap proses kerja, PT Samasta Nusantara Digdaya mengedepankan prinsip keterbukaan dan akuntabilitas. Laporan kegiatan, penggunaan anggaran, serta pencapaian target dikomunikasikan secara transparan kepada seluruh pemangku kepentingan sebagai bentuk tanggung jawab profesional.",
+    description: "Dalam setiap proses kerja, PT Samasta Nusantara Digdaya mengedepankan prinsip keterbukaan dan akuntabilitas.",
   },
 ];
 
@@ -81,64 +80,13 @@ const sopSections = [
     title: "V. PROSEDUR OPERASIONAL",
     content: null,
     procedures: [
-      {
-        name: "1. SOP Perencanaan & Registrasi",
-        steps: [
-          "Identifikasi peluang proyek atau kebutuhan klien",
-          "Penyusunan proposal teknis dan anggaran biaya",
-          "Registrasi dan administrasi kontrak kerja",
-        ],
-      },
-      {
-        name: "2. SOP Pengadaan/Procurement",
-        steps: [
-          "Seleksi dan evaluasi vendor/supplier",
-          "Pengajuan penawaran dan negosiasi harga",
-          "Pembuatan Purchase Order (PO) dan kontrak",
-          "Penerimaan, inspeksi, dan distribusi barang",
-        ],
-      },
-      {
-        name: "3. SOP Penyediaan Jasa Konsultansi & Tenaga",
-        steps: [
-          "Identifikasi kebutuhan tenaga kerja/konsultan",
-          "Proses rekrutmen, seleksi, dan penempatan",
-          "Monitoring kinerja dan evaluasi berkala",
-        ],
-      },
-      {
-        name: "4. SOP Jasa Pelatihan & Pengembangan SDM",
-        steps: [
-          "Analisis kebutuhan pelatihan (Training Need Analysis)",
-          "Penyusunan kurikulum dan materi pelatihan",
-          "Pelaksanaan pelatihan dan sertifikasi",
-          "Evaluasi efektivitas pelatihan",
-        ],
-      },
-      {
-        name: "5. SOP Event Kreatif & Media",
-        steps: [
-          "Perencanaan konsep kreatif dan media",
-          "Produksi konten (video, desain, publikasi)",
-          "Distribusi dan monitoring dampak media",
-        ],
-      },
-      {
-        name: "6. SOP Pemeliharaan, Perawatan, dan Perbaikan Lingkungan",
-        steps: [
-          "Penjadwalan rutin pemeliharaan",
-          "Pelaksanaan pekerjaan perawatan dan perbaikan",
-          "Pelaporan hasil dan rekomendasi tindak lanjut",
-        ],
-      },
-      {
-        name: "7. SOP Monitoring & Evaluasi",
-        steps: [
-          "Penetapan indikator kinerja (KPI)",
-          "Pelaksanaan monitoring berkala",
-          "Penyusunan laporan evaluasi dan rekomendasi",
-        ],
-      },
+      { name: "1. SOP Perencanaan & Registrasi", steps: ["Identifikasi peluang proyek atau kebutuhan klien", "Penyusunan proposal teknis dan anggaran biaya", "Registrasi dan administrasi kontrak kerja"] },
+      { name: "2. SOP Pengadaan/Procurement", steps: ["Seleksi dan evaluasi vendor/supplier", "Pengajuan penawaran dan negosiasi harga", "Pembuatan Purchase Order (PO) dan kontrak", "Penerimaan, inspeksi, dan distribusi barang"] },
+      { name: "3. SOP Penyediaan Jasa Konsultansi & Tenaga", steps: ["Identifikasi kebutuhan tenaga kerja/konsultan", "Proses rekrutmen, seleksi, dan penempatan", "Monitoring kinerja dan evaluasi berkala"] },
+      { name: "4. SOP Jasa Pelatihan & Pengembangan SDM", steps: ["Analisis kebutuhan pelatihan (Training Need Analysis)", "Penyusunan kurikulum dan materi pelatihan", "Pelaksanaan pelatihan dan sertifikasi", "Evaluasi efektivitas pelatihan"] },
+      { name: "5. SOP Event Kreatif & Media", steps: ["Perencanaan konsep kreatif dan media", "Produksi konten (video, desain, publikasi)", "Distribusi dan monitoring dampak media"] },
+      { name: "6. SOP Pemeliharaan, Perawatan, dan Perbaikan Lingkungan", steps: ["Penjadwalan rutin pemeliharaan", "Pelaksanaan pekerjaan perawatan dan perbaikan", "Pelaporan hasil dan rekomendasi tindak lanjut"] },
+      { name: "7. SOP Monitoring & Evaluasi", steps: ["Penetapan indikator kinerja (KPI)", "Pelaksanaan monitoring berkala", "Penyusunan laporan evaluasi dan rekomendasi"] },
     ],
   },
   {
@@ -154,23 +102,6 @@ const sopSections = [
 const KeunggulanPage = () => {
   return (
     <div>
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={buildingBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[#1E3A8A]/90" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
-              Keunggulan PT Samasta Nusantara Digdaya
-            </h1>
-            <p className="text-white/70 text-sm">
-              Keunggulan kami terletak pada integritas, profesionalisme, dan komitmen terhadap mutu.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Intro */}
       <section className="py-12 bg-background">

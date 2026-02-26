@@ -20,7 +20,7 @@ const profilSubPages = [
 const navLinks = [
   { label: "Beranda", href: "/" },
   { label: "Profil", href: "/profil", hasDropdown: true },
-  { label: "Layanan", href: "#layanan" },
+  { label: "Layanan", href: "/layanan" },
   { label: "Portofolio", href: "#portofolio" },
   { label: "Berita", href: "#berita" },
   { label: "Kontak", href: "#kontak" },
