@@ -43,7 +43,7 @@ const keunggulanItems = [
   },
 ];
 
-const sopSections = [
+const sopSections: Array<{ title: string; content?: string | null; list?: string[]; badges?: string[]; procedures?: Array<{ name: string; steps: string[] }> }> = [
   {
     title: "I. TUJUAN",
     content: "SOP ini disusun sebagai pedoman Standar Operasional Prosedur bagi PT Samasta Nusantara Digdaya dalam menjalankan seluruh kegiatan operasional secara profesional, terstruktur, efisien, dan berorientasi pada hasil yang berkualitas.",
