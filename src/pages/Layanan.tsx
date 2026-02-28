@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LayananOverview from "@/components/layanan/LayananOverview";
@@ -15,12 +15,7 @@ const subPages = [
 
 const Layanan = () => {
   const { subPage } = useParams();
-
-  if (!subPage) {
-    return <Navigate to="/layanan/overview" replace />;
-  }
-
-  const activeTab = subPage;
+  const activeTab = subPage || "overview";
   const currentLabel = subPages.find((s) => s.key === activeTab)?.label || "Layanan";
 
   const renderContent = () => {

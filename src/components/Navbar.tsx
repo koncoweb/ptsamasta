@@ -81,34 +81,45 @@ const Navbar = () => {
           {navLinks.map((l) => (
             <li key={l.label}>
               {l.hasDropdown ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                        isDropdownActive(l.dropdownKey)
-                          ? "text-gold"
-                          : "text-primary-foreground/80 hover:text-gold"
-                      }`}
-                    >
-                      {l.label}
-                      <ChevronDown size={14} />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className={l.dropdownKey === "layanan" ? "w-72" : "w-52"}>
-                    {getDropdownItems(l.dropdownKey).map((sub) => (
-                      <DropdownMenuItem key={sub.href} asChild>
-                        <Link
-                          to={sub.href}
-                          className={`w-full cursor-pointer ${
-                            location.pathname === sub.href ? "font-semibold text-[#1E3A8A]" : ""
-                          }`}
-                        >
-                          <span className="text-sm font-medium">{sub.label}</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-0">
+                  <Link
+                    to={l.href}
+                    className={`text-sm font-medium transition-colors ${
+                      isDropdownActive(l.dropdownKey)
+                        ? "text-gold"
+                        : "text-primary-foreground/80 hover:text-gold"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className={`p-1 transition-colors ${
+                          isDropdownActive(l.dropdownKey)
+                            ? "text-gold"
+                            : "text-primary-foreground/80 hover:text-gold"
+                        }`}
+                      >
+                        <ChevronDown size={14} />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className={l.dropdownKey === "layanan" ? "w-72" : "w-52"}>
+                      {getDropdownItems(l.dropdownKey).map((sub) => (
+                        <DropdownMenuItem key={sub.href} asChild>
+                          <Link
+                            to={sub.href}
+                            className={`w-full cursor-pointer ${
+                              location.pathname === sub.href ? "font-semibold text-[#1E3A8A]" : ""
+                            }`}
+                          >
+                            <span className="text-sm font-medium">{sub.label}</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               ) : isRoute(l.href) ? (
                 <Link
                   to={l.href}
