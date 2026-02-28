@@ -18,10 +18,10 @@ const profilSubPages = [
 ];
 
 const layananSubPages = [
-  { label: "Pemeliharaan, Perawatan, dan Pembuatan Lingkungan", subtitle: "Perawatan & Kebersihan", href: "/layanan/pemeliharaan" },
-  { label: "Jasa Profesional & Pengembangan SDM", subtitle: "Pelatihan & Sertifikasi", href: "/layanan/jasa-profesional" },
-  { label: "Pengolahan dan Perdagangan Besar", subtitle: "Distribusi & Konveksi", href: "/layanan/perdagangan" },
-  { label: "Event Organizer, Kreatif & Media", subtitle: "MICE & Desain Visual", href: "/layanan/event-organizer" },
+  { label: "Pemeliharaan, Perawatan, dan Pembuatan Lingkungan", href: "/layanan/pemeliharaan" },
+  { label: "Jasa Profesional & Pengembangan SDM", href: "/layanan/jasa-profesional" },
+  { label: "Pengolahan dan Perdagangan Besar", href: "/layanan/perdagangan" },
+  { label: "Event Organizer, Kreatif & Media", href: "/layanan/event-organizer" },
 ];
 
 const navLinks = [
@@ -99,14 +99,11 @@ const Navbar = () => {
                       <DropdownMenuItem key={sub.href} asChild>
                         <Link
                           to={sub.href}
-                          className={`w-full cursor-pointer flex flex-col items-start gap-0 ${
+                          className={`w-full cursor-pointer ${
                             location.pathname === sub.href ? "font-semibold text-[#1E3A8A]" : ""
                           }`}
                         >
                           <span className="text-sm font-medium">{sub.label}</span>
-                          {"subtitle" in sub && (sub as any).subtitle && (
-                            <span className="text-xs text-muted-foreground">{(sub as any).subtitle}</span>
-                          )}
                         </Link>
                       </DropdownMenuItem>
                     ))}

@@ -62,7 +62,7 @@ const LayananOverview = () => {
               <div className="p-6">
                 <p className="text-sm text-muted-foreground leading-relaxed mb-6">{s.description}</p>
                 <Link
-                  to={s.key === "pemeliharaan" ? "/layanan/pemeliharaan" : `/layanan/${s.key}`}
+                  to={`/layanan/${s.key}`}
                   className="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-[#1E3A8A] text-white font-semibold rounded-lg hover:bg-[#1D4ED8] transition-colors text-sm"
                 >
                   Lihat Detail Layanan →
