@@ -49,7 +49,7 @@ const LayananOverview = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((s) => (
-            <div key={s.key} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+            <div key={s.key} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
               {/* Gradient Header */}
               <div className={`bg-gradient-to-r ${s.gradient} p-6`}>
                 <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
@@ -59,8 +59,8 @@ const LayananOverview = () => {
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">{s.description}</p>
+              <div className="p-6 flex flex-col flex-grow">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{s.description}</p>
                 <Link
                   to={`/layanan/${s.key}`}
                   className="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-[#1E3A8A] text-white font-semibold rounded-lg hover:bg-[#1D4ED8] transition-colors text-sm"

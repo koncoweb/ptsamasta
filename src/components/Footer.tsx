@@ -28,9 +28,9 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-sm mb-4">Tautan Cepat</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><a href="#" className="hover:text-gold transition-colors">Profil Perusahaan</a></li>
-              <li><a href="#layanan" className="hover:text-gold transition-colors">Layanan</a></li>
-              <li><a href="#" className="hover:text-gold transition-colors">Portofolio</a></li>
+              <li><a href="/profil/tentang-kami" className="hover:text-gold transition-colors">Profil Perusahaan</a></li>
+              <li><a href="/layanan" className="hover:text-gold transition-colors">Layanan</a></li>
+              <li><a href="#portofolio" className="hover:text-gold transition-colors">Portofolio</a></li>
               <li><a href="#berita" className="hover:text-gold transition-colors">Berita</a></li>
               <li><a href="#kontak" className="hover:text-gold transition-colors">Kontak</a></li>
             </ul>

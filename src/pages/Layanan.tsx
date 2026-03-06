@@ -73,12 +73,12 @@ const Layanan = () => {
           <p className="text-white/70 text-sm mb-8">
             Tim profesional kami siap membantu Anda menemukan solusi terbaik untuk mengembangkan bisnis Anda
           </p>
-          <Link
-            to="#kontak"
+          <a
+            href="#kontak"
             className="inline-flex items-center gap-2 px-8 py-3 bg-white text-[#1E3A8A] font-semibold rounded-lg hover:bg-white/90 transition-colors text-sm"
           >
             Ajukan Penawaran →
-          </Link>
+          </a>
         </div>
       </section>
 
