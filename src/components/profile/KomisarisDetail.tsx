@@ -31,7 +31,7 @@ const KomisarisDetail = () => {
                 to="/profil/struktur-manajemen"
                 className="inline-block mt-3 border border-primary-foreground/30 text-primary-foreground text-xs px-4 py-1.5 rounded-full hover:bg-primary-foreground/10 transition-colors"
               >
-                ← Komisaris
+                Komisaris
               </Link>
             </div>
 
