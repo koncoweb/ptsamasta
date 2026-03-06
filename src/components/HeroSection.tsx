@@ -18,9 +18,8 @@ const HeroSection = () => {
           Untuk Membangun Pertumbuhan Bisnis Secara Profesional Dan Berkelanjutan
         </h1>
         <a
-          href="#tentang"
+          href="/profil/tentang-kami"
           className="inline-block mt-4 px-8 py-3 bg-[#2563EB] text-primary-foreground font-semibold text-sm rounded-lg hover:bg-[#1D4ED8] transition-all duration-300">
-
           PELAJARI TENTANG KAMI
         </a>
       </div>

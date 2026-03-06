@@ -16,7 +16,7 @@ const CTASection = () => {
             Hubungi Tim Kami
           </a>
           <a
-            href="#layanan"
+            href="/layanan"
             className="px-8 py-3 border-2 border-navy text-navy font-semibold text-sm rounded-lg hover:bg-navy hover:text-primary-foreground transition-all duration-300"
           >
             Lihat Layanan Kami
