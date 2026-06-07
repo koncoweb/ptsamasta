@@ -143,6 +143,15 @@ const AjukanPenawaran = () => {
   const config = serviceConfigs[serviceType || ""];
   const { toast } = useToast();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    nama_lengkap: "",
+    nama_perusahaan: "",
+    email: "",
+    whatsapp: "",
+    deskripsi: "",
+    estimasi_waktu: "",
+  });
 
   if (!config) {
     return (
