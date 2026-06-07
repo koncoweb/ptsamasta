@@ -339,19 +339,34 @@ const AjukanPenawaran = () => {
                   <label className="block text-sm font-semibold text-foreground mb-2">
                     Deskripsi Kebutuhan / Proyek <span className="text-red-500">*</span>
                   </label>
-                  <Textarea placeholder="Jelaskan kebutuhan dan detail proyek Anda secara lengkap..." rows={4} required />
+                  <Textarea
+                    placeholder="Jelaskan kebutuhan dan detail proyek Anda secara lengkap..."
+                    rows={4}
+                    required
+                    value={form.deskripsi}
+                    onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-foreground mb-2">
                     Estimasi Waktu Pengerjaan <span className="text-red-500">*</span>
                   </label>
-                  <Input placeholder="Contoh: 3 bulan" required />
+                  <Input
+                    placeholder="Contoh: 3 bulan"
+                    required
+                    value={form.estimasi_waktu}
+                    onChange={(e) => setForm({ ...form, estimasi_waktu: e.target.value })}
+                  />
                 </div>
 
-                <Button type="submit" className="w-full bg-[#1E3A8A] hover:bg-[#1D4ED8] text-white py-6 text-sm font-semibold">
-                  <Send size={16} />
-                  Kirim Permintaan
+                <Button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-[#1E3A8A] hover:bg-[#1D4ED8] text-white py-6 text-sm font-semibold"
+                >
+                  {submitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                  {submitting ? "Mengirim..." : "Kirim Permintaan"}
                 </Button>
               </form>
             </div>
