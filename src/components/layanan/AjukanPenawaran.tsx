@@ -174,12 +174,38 @@ const AjukanPenawaran = () => {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Permintaan terkirim!",
-      description: "Tim kami akan menghubungi Anda dalam waktu 1×24 jam.",
-    });
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("pengajuan_penawaran").insert({
+        nama_lengkap: form.nama_lengkap.trim(),
+        nama_perusahaan: form.nama_perusahaan.trim(),
+        email: form.email.trim(),
+        whatsapp: form.whatsapp.trim(),
+        category_slug: "pemeliharaan",
+        scope_slug: serviceType,
+        selected_services: selectedServices,
+        deskripsi: form.deskripsi.trim(),
+        estimasi_waktu: form.estimasi_waktu.trim(),
+      });
+      if (error) throw error;
+      toast({
+        title: "Permintaan terkirim!",
+        description: "Tim kami akan menghubungi Anda dalam waktu 1×24 jam.",
+      });
+      setForm({ nama_lengkap: "", nama_perusahaan: "", email: "", whatsapp: "", deskripsi: "", estimasi_waktu: "" });
+      setSelectedServices([]);
+    } catch (err: any) {
+      toast({
+        title: "Gagal mengirim permintaan",
+        description: err?.message ?? "Silakan coba lagi.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
