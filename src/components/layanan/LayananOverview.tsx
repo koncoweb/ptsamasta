@@ -1,42 +1,29 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Wrench, GraduationCap, ShoppingCart, Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { getIcon } from "@/lib/icons";
 
-const services = [
-  {
-    key: "pemeliharaan",
-    icon: Wrench,
-    title: "Pemeliharaan, Perawatan, dan Pembuatan Lingkungan",
-    description:
-      "Layanan terpadu dalam perawatan taman, pembersihan gedung, dan manajemen kebersihan lingkungan untuk memastikan fasilitas Anda selalu dalam kondisi optimal dan nyaman.",
-    gradient: "from-green-500 to-emerald-600",
-  },
-  {
-    key: "jasa-profesional",
-    icon: GraduationCap,
-    title: "Jasa Profesional & Pengembangan SDM",
-    description:
-      "Solusi pelatihan berbasis kompetensi, sertifikasi profesi, konsultasi hukum, dan pendampingan teknis untuk meningkatkan kapasitas sumber daya manusia organisasi Anda.",
-    gradient: "from-blue-500 to-indigo-600",
-  },
-  {
-    key: "perdagangan",
-    icon: ShoppingCart,
-    title: "Pengolahan dan Perdagangan Besar",
-    description:
-      "Layanan distribusi dan perdagangan besar berbagai macam barang dengan sistem rantai pasok terkontrol, termasuk manufaktur konveksi untuk kebutuhan seragam dan atribut.",
-    gradient: "from-green-500 to-teal-600",
-  },
-  {
-    key: "event-organizer",
-    icon: Sparkles,
-    title: "Event Organizer, Kreatif & Media",
-    description:
-      "Penyelenggaraan event profesional (MICE), jasa desain komunikasi visual, dan layanan catering dalam satu koordinasi terpadu untuk memaksimalkan pengalaman acara Anda.",
-    gradient: "from-pink-500 to-purple-600",
-  },
-];
+type Category = {
+  id: string;
+  slug: string;
+  name: string;
+  short_description: string | null;
+  icon: string | null;
+  color_theme: string | null;
+};
 
 const LayananOverview = () => {
+  const [services, setServices] = useState<Category[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("service_categories")
+      .select("id,slug,name,short_description,icon,color_theme,sort_order,is_active")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => setServices(data ?? []));
+  }, []);
+
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -48,28 +35,30 @@ const LayananOverview = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((s) => (
-            <div key={s.key} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
-              {/* Gradient Header */}
-              <div className={`bg-gradient-to-r ${s.gradient} p-6`}>
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
-                  <s.icon className="w-6 h-6 text-white" />
+          {services.map((s) => {
+            const Icon = getIcon(s.icon);
+            const gradient = s.color_theme ?? "from-blue-500 to-indigo-600";
+            return (
+              <div key={s.id} className="bg-card rounded-xl border border-border overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                <div className={`bg-gradient-to-r ${gradient} p-6`}>
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white leading-tight">{s.name}</h3>
                 </div>
-                <h3 className="text-lg font-bold text-white leading-tight">{s.title}</h3>
-              </div>
 
-              {/* Content */}
-              <div className="p-6 flex flex-col flex-grow">
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{s.description}</p>
-                <Link
-                  to={`/layanan/${s.key}`}
-                  className="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-[#1E3A8A] text-white font-semibold rounded-lg hover:bg-[#1D4ED8] transition-colors text-sm"
-                >
-                  Lihat Detail Layanan →
-                </Link>
+                <div className="p-6 flex flex-col flex-grow">
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">{s.short_description}</p>
+                  <Link
+                    to={`/layanan/${s.slug}`}
+                    className="inline-flex items-center justify-center w-full gap-2 px-6 py-3 bg-[#1E3A8A] text-white font-semibold rounded-lg hover:bg-[#1D4ED8] transition-colors text-sm"
+                  >
+                    Lihat Detail Layanan →
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

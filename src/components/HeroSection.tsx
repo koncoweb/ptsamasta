@@ -1,30 +1,61 @@
+import { useEffect, useState } from "react";
 import heroBg from "@/assets/hero-building.png";
+import { supabase } from "@/integrations/supabase/client";
 
 const HeroSection = () => {
+  const [data, setData] = useState<{
+    title: string;
+    subtitle?: string | null;
+    cta_primary_label?: string | null;
+    cta_primary_href?: string | null;
+    image_url?: string | null;
+  } | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from("home_hero")
+      .select("title,subtitle,cta_primary_label,cta_primary_href,image_url")
+      .eq("is_active", true)
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => data && setData(data));
+  }, []);
+
+  const title = data?.title ?? "Solusi Terpadu Dalam Pelayanan";
+  const subtitle =
+    data?.subtitle ??
+    "One-Stop Solution\nUntuk Membangun Pertumbuhan Bisnis Secara Profesional Dan Berkelanjutan";
+  const ctaLabel = data?.cta_primary_label ?? "PELAJARI TENTANG KAMI";
+  const ctaHref = data?.cta_primary_href ?? "/profil/tentang-kami";
+  const img = data?.image_url || heroBg;
+
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" />
+        <img src={img} alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1E3A8A]/80 via-[#1D4ED8]/60 to-[#1E3A8A]/90" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl pt-16">
-        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-primary-foreground leading-tight mb-6 md:text-3xl">
-          Solusi Terpadu Dalam Pelayanan{" "}
-          <span className="text-gradient-gold italic">One-Stop Solution</span>
-          <br />
-          Untuk Membangun Pertumbuhan Bisnis Secara Profesional Dan Berkelanjutan
+        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-primary-foreground leading-tight mb-6 md:text-3xl whitespace-pre-line">
+          {title}{" "}
+          <span className="text-gradient-gold italic">{subtitle.split("\n")[0]}</span>
+          {subtitle.includes("\n") && (
+            <>
+              <br />
+              {subtitle.split("\n").slice(1).join(" ")}
+            </>
+          )}
         </h1>
         <a
-          href="/profil/tentang-kami"
+          href={ctaHref}
           className="inline-block mt-4 px-8 py-3 bg-[#2563EB] text-primary-foreground font-semibold text-sm rounded-lg hover:bg-[#1D4ED8] transition-all duration-300">
-          PELAJARI TENTANG KAMI
+          {ctaLabel}
         </a>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 export default HeroSection;
