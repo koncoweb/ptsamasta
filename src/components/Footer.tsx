@@ -1,7 +1,37 @@
+import { useEffect, useState } from "react";
 import { MapPin, Phone, Mail, Instagram, Linkedin } from "lucide-react";
 import logoSamasta from "@/assets/logo-samasta.png";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Contact {
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+}
 
 const Footer = () => {
+  const [contact, setContact] = useState<Contact | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from("kontak_info")
+      .select("address, phone, email, instagram, linkedin")
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setContact(data);
+        }
+      });
+  }, []);
+
+  const address = contact?.address ?? "Jl. Tergalent, RT.01/RW.3, Pademangan, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta";
+  const phone = contact?.phone ?? "+62 856-1397-4228";
+  const email = contact?.email ?? "info@snd.co.id";
+  const instagram = contact?.instagram ?? "#";
+  const linkedin = contact?.linkedin ?? "#";
+
   return (
     <footer id="kontak" className="bg-navy-dark text-primary-foreground">
       <div className="container mx-auto px-4 py-14">
@@ -15,12 +45,16 @@ const Footer = () => {
               Perusahaan jasa dan pengadaan yang berpengalaman dalam menyediakan berbagai layanan profesional untuk mendukung pertumbuhan bisnis UMKM, Startup, dan Perusahaan di Indonesia.
             </p>
             <div className="flex gap-3 mt-4">
-              <a href="#" className="w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold transition-colors">
-                <Instagram size={16} />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold transition-colors">
-                <Linkedin size={16} />
-              </a>
+              {instagram !== "#" && (
+                <a href={instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold transition-colors">
+                  <Instagram size={16} />
+                </a>
+              )}
+              {linkedin !== "#" && (
+                <a href={linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-gold transition-colors">
+                  <Linkedin size={16} />
+                </a>
+              )}
             </div>
           </div>
 
@@ -42,15 +76,15 @@ const Footer = () => {
             <ul className="space-y-3 text-sm text-primary-foreground/70">
               <li className="flex items-start gap-2">
                 <MapPin size={16} className="flex-shrink-0 mt-0.5 text-gold" />
-                <span>Jl. Tergalent, RT.01/RW.3, Pademangan, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta</span>
+                <span>{address}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={16} className="flex-shrink-0 text-gold" />
-                <span>+62 856-1397-4228</span>
+                <span>{phone}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={16} className="flex-shrink-0 text-gold" />
-                <span>info@snd.co.id</span>
+                <span>{email}</span>
               </li>
             </ul>
           </div>
@@ -58,12 +92,12 @@ const Footer = () => {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-primary-foreground/10">
-        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-foreground/50">
-          <span>© 2025 PT Samasta Nusantara Digdaya. All rights reserved.</span>
-          <div className="flex gap-4 mt-2 sm:mt-0">
-            <a href="#" className="hover:text-primary-foreground transition-colors">Kebijakan Privasi</a>
-            <a href="#" className="hover:text-primary-foreground transition-colors">Syarat & Ketentuan</a>
+      <div className="border-t border-primary-foreground/15 py-6">
+        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/60">
+          <p>© {new Date().getFullYear()} PT Samasta Nusantara Digdaya. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-gold transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-gold transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>

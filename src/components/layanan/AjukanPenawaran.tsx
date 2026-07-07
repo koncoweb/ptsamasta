@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -12,138 +12,31 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface ServiceOption {
   name: string;
-  description: string;
-  image: string;
+  description: string | null;
+  image_url: string | null;
   details: string[];
 }
 
-const serviceConfigs: Record<string, {
-  badge: string;
-  title: string;
-  parentPath: string;
-  services: ServiceOption[];
-}> = {
-  "perawatan-taman": {
-    badge: "Perawatan Taman",
-    title: "Ajukan Permintaan Penawaran",
-    parentPath: "/layanan/pemeliharaan",
-    services: [
-      {
-        name: "Pemeliharaan Rutin (Routine Maintenance)",
-        description: "Mencakup penyiraman untuk menjaga kelembaban tanah, pemupukan untuk nutrisi tanah optimal, pemangkasan & penataan ranting dan rumput, pembersihan area dari daun kering dan sampah, serta penyiangan gulma atau rumput liar.",
-        image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&h=200&fit=crop",
-        details: [
-          "Penyiraman: Memastikan kelembaban tanah terjaga sesuai kebutuhan jenis tanaman",
-          "Pemupukan: Pemberian nutrisi tanah untuk pertumbuhan optimal",
-          "Pemangkasan & Penataan: Memangkas ranting, dahan, atau rumput agar taman terlihat rapi",
-          "Pembersihan Area (Garden Cleaning): Mengumpulkan daun kering, sampah, dan membersihkan jalur setapak",
-          "Penyiangan: Menghilangkan gulma atau rumput liar yang mengganggu",
-        ],
-      },
-      {
-        name: "Pemeliharaan Teknis dan Khusus",
-        description: "Mencakup pengendalian hama & penyakit dengan pestisida organik atau kimia aman, penggantian tanaman yang rusak (replanting), penggemburan tanah dan pemasangan mulsa, serta pembersihan kolam, air mancur, dan sistem drainase taman.",
-        image: "https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=300&h=200&fit=crop",
-        details: [
-          "Pengendalian Hama & Penyakit: Penanganan dengan pestisida organik atau kimia aman",
-          "Penggantian Tanaman (Replanting): Mengganti tanaman yang sudah mati atau rusak",
-          "Perawatan Tanah: Penggemburan tanah dan pemasangan mulsa untuk menjaga kelembaban",
-          "Perawatan Fitur Air: Pembersihan kolam, air mancur, atau sistem drainase taman",
-        ],
-      },
-      {
-        name: "Penataan (Landscaping Services)",
-        description: "Mencakup desain ulang atau penataan taman untuk mengatur ulang tata letak tanaman dan dekorasi, perawatan tanaman dalam ruangan (indoor plants) khusus untuk tanaman hias di kantor atau rumah, serta perawatan khusus taman vertikal dan atap hijau (vertical garden & green roof).",
-        image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=300&h=200&fit=crop",
-        details: [
-          "Desain Ulang/Penataan Taman: Mengatur ulang tata letak tanaman atau menambah dekorasi",
-          "Perawatan Tanaman Dalam Ruangan (Indoor Plants): Khusus untuk tanaman hias di dalam kantor atau rumah",
-          "Vertical Garden & Green Roof: Perawatan khusus taman vertikal dan atap hijau",
-        ],
-      },
-      {
-        name: "Dekorasi Panggung Acara",
-        description: "Layanan dekorasi panggung profesional untuk berbagai kegiatan, mencakup dekorasi untuk seminar & konferensi, wisuda, acara kenegaraan/pemerintahan, hiburan & festival, serta backdrop panggung dengan desain custom sesuai kebutuhan acara Anda.",
-        image: "https://images.unsplash.com/photo-1478147427282-58a87a120781?w=300&h=200&fit=crop",
-        details: [
-          "Dekorasi panggung seminar & konferensi",
-          "Dekorasi panggung wisuda",
-          "Dekorasi panggung kenegaraan / pemerintahan",
-          "Dekorasi panggung hiburan & festival",
-          "Backdrop panggung custom design",
-        ],
-      },
-    ],
-  },
-  "kebersihan-bangunan": {
-    badge: "Kebersihan Bangunan",
-    title: "Ajukan Permintaan Penawaran",
-    parentPath: "/layanan/pemeliharaan",
-    services: [
-      {
-        name: "Kebersihan Area Dalam Gedung (Indoor Cleaning)",
-        description: "Layanan pembersihan menyeluruh untuk area dalam gedung mencakup pembersihan lantai dengan berbagai metode (sapu, pel, vacuum, polishing), pembersihan karpet & permadani, kaca & partisi, furniture, plafon & dinding, lift & eskalator, area resepsionis & lobby, serta ruang rapat & aula untuk menciptakan lingkungan kerja yang bersih dan nyaman.",
-        image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=300&h=200&fit=crop",
-        details: [
-          "Pembersihan lantai (sapu, pel, vacuum, polishing)",
-          "Pembersihan karpet & permadani",
-          "Pembersihan kaca & partisi",
-          "Pembersihan meja, kursi, lemari & furniture",
-          "Pembersihan plafon & dinding",
-          "Pembersihan lift & eskalator",
-          "Pembersihan area resepsionis & lobby",
-          "Pembersihan ruang rapat & aula",
-        ],
-      },
-      {
-        name: "Kebersihan Area Luar Gedung (Outdoor Cleaning)",
-        description: "Layanan pembersihan area luar gedung mencakup penyapuan halaman & area parkir, pembersihan selokan & drainase untuk mencegah banjir, pembersihan taman & landscape ringan, pembersihan kanopi & fasad gedung agar tampak bersih dan terawat, serta pembersihan pagar & gerbang untuk menjaga estetika dan kebersihan eksterior bangunan.",
-        image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=300&h=200&fit=crop",
-        details: [
-          "Penyapuan halaman & area parkir",
-          "Pembersihan selokan & drainase",
-          "Pembersihan taman & landscape ringan",
-          "Pembersihan kanopi & fasad gedung",
-          "Pembersihan pagar & gerbang",
-          "Pembersihan kloset, washtafel, urinal",
-          "Pengisian sabun, tisu, pengharum",
-          "Desinfeksi lantai & dinding",
-          "Penghitungan karbol & kocek membersihkol",
-          "Desinfeksi area sensitif tinggi",
-        ],
-      },
-      {
-        name: "General Cleaning Berkala",
-        description: "Layanan pembersihan menyeluruh dan mendalam yang dilakukan secara berkala mencakup deep cleaning seluruh ruangan untuk kebersihan maksimal, cuci karpet & sofa dengan teknik profesional, poles lantai marmer/granit/vinyl untuk tampilan mengkilap dan terawat, serta fogging desinfektan untuk sterilisasi ruangan dan mencegah penyebaran kuman.",
-        image: "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=300&h=200&fit=crop",
-        details: [
-          "Deep cleaning seluruh ruangan",
-          "Cuci karpet & sofa",
-          "Poles lantai marmer/granit/vinyl",
-          "Fogging desinfektan",
-        ],
-      },
-      {
-        name: "Post Construction Cleaning",
-        description: "Layanan pembersihan pasca konstruksi untuk menyiapkan gedung yang baru selesai dibangun atau direnovasi, mencakup pembersihan sisa material bangunan, pengangkatan debu semen & cat, pembersihan menyeluruh kaca, lantai, dan kusen, sehingga gedung siap untuk serah terima dan ditempati dengan kondisi bersih sempurna.",
-        image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=300&h=200&fit=crop",
-        details: [
-          "Pembersihan sisa material bangunan",
-          "Pengangkatan debu semen & cat",
-          "Pembersihan kaca, lantai, kusen",
-          "Siap serah terima gedung",
-        ],
-      },
-    ],
-  },
-};
+interface Scope {
+  id: string;
+  name: string;
+}
+
+interface ContactInfo {
+  email: string;
+  phone: string;
+}
 
 const AjukanPenawaran = () => {
-  const { serviceType } = useParams();
-  const config = serviceConfigs[serviceType || ""];
+  const { categorySlug, serviceType } = useParams();
   const { toast } = useToast();
+  const [scope, setScope] = useState<Scope | null>(null);
+  const [services, setServices] = useState<ServiceOption[]>([]);
+  const [contact, setContact] = useState<ContactInfo | null>(null);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [form, setForm] = useState({
     nama_lengkap: "",
     nama_perusahaan: "",
@@ -153,20 +46,59 @@ const AjukanPenawaran = () => {
     estimasi_waktu: "",
   });
 
-  if (!config) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="py-32 text-center">
-          <p className="text-muted-foreground">Halaman tidak ditemukan.</p>
-          <Link to="/layanan/pemeliharaan" className="text-primary underline mt-4 inline-block">
-            Kembali ke Layanan
-          </Link>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetch scope details
+        const { data: scopeData, error: scopeErr } = await supabase
+          .from("service_scopes")
+          .select("id, name")
+          .eq("slug", serviceType)
+          .maybeSingle();
+
+        if (scopeErr) throw scopeErr;
+
+        if (scopeData) {
+          setScope(scopeData);
+
+          // Fetch items for this scope
+          const { data: itemsData } = await supabase
+            .from("service_scope_items")
+            .select("name, description, image_url, details")
+            .eq("scope_id", scopeData.id)
+            .eq("is_active", true)
+            .order("sort_order");
+
+          if (itemsData) {
+            const formatted = itemsData.map((item) => ({
+              name: item.name,
+              description: item.description,
+              image_url: item.image_url,
+              details: Array.isArray(item.details) ? (item.details as string[]) : [],
+            }));
+            setServices(formatted);
+          }
+        }
+
+        // Fetch contact details
+        const { data: contactData } = await supabase
+          .from("kontak_info")
+          .select("email, phone")
+          .maybeSingle();
+
+        if (contactData) {
+          setContact(contactData);
+        }
+      } catch (err) {
+        console.error("Error loading request form data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [serviceType]);
 
   const toggleService = (name: string) => {
     setSelectedServices((prev) =>
@@ -177,6 +109,14 @@ const AjukanPenawaran = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    if (selectedServices.length === 0) {
+      toast({
+        title: "Pilih layanan",
+        description: "Pilih minimal satu layanan yang Anda butuhkan.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
       const { error } = await supabase.from("pengajuan_penawaran").insert({
@@ -184,7 +124,7 @@ const AjukanPenawaran = () => {
         nama_perusahaan: form.nama_perusahaan.trim(),
         email: form.email.trim(),
         whatsapp: form.whatsapp.trim(),
-        category_slug: "pemeliharaan",
+        category_slug: categorySlug || "pemeliharaan",
         scope_slug: serviceType,
         selected_services: selectedServices,
         deskripsi: form.deskripsi.trim(),
@@ -208,6 +148,31 @@ const AjukanPenawaran = () => {
     }
   };
 
+  const parentPath = `/layanan/${categorySlug || "pemeliharaan"}`;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#1E3A8A]" />
+      </div>
+    );
+  }
+
+  if (!scope) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="py-32 text-center">
+          <p className="text-muted-foreground">Halaman tidak ditemukan.</p>
+          <Link to={parentPath} className="text-primary underline mt-4 inline-block">
+            Kembali ke Layanan
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -216,7 +181,7 @@ const AjukanPenawaran = () => {
         <div className="container mx-auto px-4">
           {/* Back link */}
           <Link
-            to={config.parentPath}
+            to={parentPath}
             className="inline-flex items-center gap-2 text-sm text-primary hover:underline mb-8"
           >
             <ArrowLeft size={16} />
@@ -226,9 +191,9 @@ const AjukanPenawaran = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1.5 bg-[#1E3A8A] text-white text-xs font-semibold rounded-full mb-4">
-              {config.badge}
+              {scope.name}
             </span>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mb-3">{config.title}</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mb-3">Ajukan Permintaan Penawaran</h1>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Isi formulir di bawah ini untuk mendapatkan penawaran terbaik dari kami. Tim profesional kami akan menghubungi Anda dalam waktu 1×24 jam untuk membahas kebutuhan proyek Anda secara detail.
             </p>
@@ -285,55 +250,61 @@ const AjukanPenawaran = () => {
                 </div>
 
                 {/* Service Selection */}
-                <div>
-                  <label className="block text-sm font-semibold text-foreground mb-2">
-                    Our Service <span className="text-red-500">*</span>
-                    <span className="text-muted-foreground font-normal ml-1">(Dapat memilih lebih dari satu)</span>
-                  </label>
-                  <div className="space-y-4 mt-4">
-                    {config.services.map((service) => (
-                      <div
-                        key={service.name}
-                        className={`rounded-xl border-2 p-5 transition-colors cursor-pointer ${
-                          selectedServices.includes(service.name)
-                            ? "border-[#1E3A8A] bg-blue-50/50"
-                            : "border-border"
-                        }`}
-                        onClick={() => toggleService(service.name)}
-                      >
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-start gap-3 mb-2">
-                              <Checkbox
-                                checked={selectedServices.includes(service.name)}
-                                onCheckedChange={() => toggleService(service.name)}
-                                className="mt-1"
-                              />
-                              <h4 className="font-bold text-foreground text-sm">{service.name}</h4>
+                {services.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-semibold text-foreground mb-2">
+                      Layanan Kami <span className="text-red-500">*</span>
+                      <span className="text-muted-foreground font-normal ml-1">(Dapat memilih lebih dari satu)</span>
+                    </label>
+                    <div className="space-y-4 mt-4">
+                      {services.map((service) => (
+                        <div
+                          key={service.name}
+                          className={`rounded-xl border-2 p-5 transition-colors cursor-pointer ${
+                            selectedServices.includes(service.name)
+                              ? "border-[#1E3A8A] bg-blue-50/50"
+                              : "border-border"
+                          }`}
+                          onClick={() => toggleService(service.name)}
+                        >
+                          <div className="flex flex-col md:flex-row gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-start gap-3 mb-2">
+                                <Checkbox
+                                  checked={selectedServices.includes(service.name)}
+                                  onCheckedChange={() => toggleService(service.name)}
+                                  className="mt-1"
+                                />
+                                <h4 className="font-bold text-foreground text-sm">{service.name}</h4>
+                              </div>
+                              <p className="text-muted-foreground text-xs leading-relaxed ml-7 mb-3">
+                                {service.description}
+                              </p>
+                              {service.details.length > 0 && (
+                                <div className="ml-7">
+                                  <p className="text-xs font-semibold text-foreground mb-1">Ruang Lingkup:</p>
+                                  <ul className="space-y-1">
+                                    {service.details.map((d, i) => (
+                                      <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                                        <span className="mt-0.5">•</span>
+                                        <span>{d}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
                             </div>
-                            <p className="text-muted-foreground text-xs leading-relaxed ml-7 mb-3">
-                              {service.description}
-                            </p>
-                            <div className="ml-7">
-                              <p className="text-xs font-semibold text-foreground mb-1">Ruang Lingkup:</p>
-                              <ul className="space-y-1">
-                                {service.details.map((d, i) => (
-                                  <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                                    <span className="mt-0.5">•</span>
-                                    <span>{d}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="flex-shrink-0 w-full md:w-40 h-28 rounded-lg overflow-hidden">
-                            <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
+                            {service.image_url && (
+                              <div className="flex-shrink-0 w-full md:w-40 h-28 rounded-lg overflow-hidden bg-muted">
+                                <img src={service.image_url} alt={service.name} className="w-full h-full object-cover" />
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-semibold text-foreground mb-2">
@@ -420,11 +391,11 @@ const AjukanPenawaran = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Mail size={14} />
-                    <span>info@snd.co.id</span>
+                    <span>{contact?.email || "info@snd.co.id"}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Phone size={14} />
-                    <span>+62 858-1397-4229</span>
+                    <span>{contact?.phone || "+62 856-1397-4228"}</span>
                   </div>
                 </div>
               </div>

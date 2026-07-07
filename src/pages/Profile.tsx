@@ -6,17 +6,16 @@ import StrukturManajemen from "@/components/profile/StrukturManajemen";
 import SejarahPage from "@/components/profile/SejarahPage";
 import LegalitasPage from "@/components/profile/LegalitasPage";
 import KeunggulanPage from "@/components/profile/KeunggulanPage";
-import KomisarisUtamaDetail from "@/components/profile/KomisarisUtamaDetail";
-import KomisarisDetail from "@/components/profile/KomisarisDetail";
+import LeadershipDetail from "@/components/profile/LeadershipDetail";
 import buildingBg from "@/assets/building-bg.jpg";
 
 const subPages = [
-{ key: "tentang-kami", label: "Tentang Kami" },
-{ key: "struktur-manajemen", label: "Struktur Manajemen" },
-{ key: "sejarah", label: "Sejarah" },
-{ key: "legalitas", label: "Legalitas & Perizinan" },
-{ key: "keunggulan", label: "Keunggulan" }];
-
+  { key: "tentang-kami", label: "Tentang Kami" },
+  { key: "struktur-manajemen", label: "Struktur Manajemen" },
+  { key: "sejarah", label: "Sejarah" },
+  { key: "legalitas", label: "Legalitas & Perizinan" },
+  { key: "keunggulan", label: "Keunggulan" }
+];
 
 const Profile = () => {
   const { subPage } = useParams();
@@ -27,25 +26,18 @@ const Profile = () => {
 
   const activeTab = subPage;
 
-  // Detail pages for komisaris
-  if (activeTab === "komisaris-utama") {
+  // Render dynamic leadership profile if tab is not a standard subpage
+  const isStandardTab = subPages.some(p => p.key === activeTab);
+  if (!isStandardTab) {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <main><KomisarisUtamaDetail /></main>
+        <main>
+          <LeadershipDetail slug={activeTab} />
+        </main>
         <Footer />
-      </div>);
-
-  }
-
-  if (activeTab === "komisaris") {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main><KomisarisDetail /></main>
-        <Footer />
-      </div>);
-
+      </div>
+    );
   }
 
   const renderContent = () => {
