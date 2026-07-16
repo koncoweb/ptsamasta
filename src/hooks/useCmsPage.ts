@@ -60,7 +60,7 @@ export function useCmsPage<T>(slug: string): UseCmsPageResult<T> {
 
   const setContent: UseCmsPageResult<T>["setContent"] = useCallback((next) => {
     setContentState((prev) => {
-      const base = (prev ?? {}) as T;
+      const base = prev as T;
       const value = typeof next === "function" ? (next as (p: T) => T)(base) : next;
       return value;
     });
