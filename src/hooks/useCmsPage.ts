@@ -68,8 +68,10 @@ export function useCmsPage<T>(slug: string): UseCmsPageResult<T> {
       
       const defaultData = getDefaults(slug);
       let contentVal = data.content ?? null;
+      console.log(`[useCmsPage] slug: ${slug}, defaultData:`, defaultData, `contentVal:`, contentVal);
       if (contentVal && defaultData) {
         contentVal = mergeDeep(defaultData, contentVal);
+        console.log(`[useCmsPage] Merged content:`, contentVal);
       } else if (!contentVal && defaultData) {
         contentVal = defaultData;
       }
