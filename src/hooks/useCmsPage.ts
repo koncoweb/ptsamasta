@@ -2,6 +2,29 @@ import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { showError, friendlyError } from "@/lib/errors";
+import { getDefaults } from "@/lib/cms/defaults";
+
+function isObject(item: any): boolean {
+  return item && typeof item === "object" && !Array.isArray(item);
+}
+
+function mergeDeep(target: any, source: any): any {
+  let output = Object.assign({}, target);
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach((key) => {
+      if (isObject(source[key])) {
+        if (!(key in target)) {
+          Object.assign(output, { [key]: source[key] });
+        } else {
+          output[key] = mergeDeep(target[key], source[key]);
+        }
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
+}
 
 type Status = "idle" | "loading" | "ready" | "empty" | "error";
 
@@ -42,7 +65,16 @@ export function useCmsPage<T>(slug: string): UseCmsPageResult<T> {
         setStatus("empty");
         return;
       }
-      setContentState((data.content ?? null) as T | null);
+      
+      const defaultData = getDefaults(slug);
+      let contentVal = data.content ?? null;
+      if (contentVal && defaultData) {
+        contentVal = mergeDeep(defaultData, contentVal);
+      } else if (!contentVal && defaultData) {
+        contentVal = defaultData;
+      }
+      
+      setContentState(contentVal as T | null);
       setUpdatedAt(data.updated_at);
       setStatus("ready");
     } catch (e) {
