@@ -26,6 +26,7 @@ import { LayananSubPage, type SubMeta } from "./components/admin/layanan/Layanan
 import { PortofolioPage } from "./components/admin/portofolio/PortofolioPage";
 import { PengajuanJasaPage } from "./components/admin/pengajuan-jasa/PengajuanJasaPage";
 import { PenggunaPage } from "./components/admin/pengguna/PenggunaPage";
+import { PengaturanPage } from "./components/admin/pengaturan/PengaturanPage";
 import { PagePlaceholder } from "./components/admin/PagePlaceholder";
 
 const queryClient = new QueryClient();
@@ -77,7 +78,7 @@ const App = () => (
             <Route path="portofolio" element={<PortofolioPage />} />
             <Route path="pengajuan-jasa" element={<PengajuanJasaPage />} />
             <Route path="pengguna" element={<PenggunaPage />} />
-            <Route path="pengaturan" element={<PagePlaceholder title="Pengaturan" />} />
+            <Route path="pengaturan" element={<PengaturanPage />} />
             <Route path="kalender" element={<PagePlaceholder title="Kalender" />} />
           </Route>
 

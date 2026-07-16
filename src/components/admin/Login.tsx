@@ -17,10 +17,31 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [allowRegister, setAllowRegister] = useState(true);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate("/admin/dashboard");
     });
+
+    const checkRegStatus = async () => {
+      try {
+        const { data } = await supabase
+          .from("cms_pages")
+          .select("content")
+          .eq("slug", "pengaturan")
+          .maybeSingle();
+        if (data && data.content) {
+          const content = data.content as any;
+          if (content.keamanan && typeof content.keamanan.izinkanRegistrasi === "boolean") {
+            setAllowRegister(content.keamanan.izinkanRegistrasi);
+          }
+        }
+      } catch (e) {
+        console.error("Gagal memeriksa status registrasi:", e);
+      }
+    };
+    void checkRegStatus();
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -168,16 +189,30 @@ export function LoginPage() {
             Lanjutkan dengan Google
           </Button>
 
-          <p className="text-center text-sm text-slate-500 mt-6">
-            {mode === "signin" ? "Belum punya akun? " : "Sudah punya akun? "}
-            <button
-              type="button"
-              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-              className="text-primary font-medium hover:underline"
-            >
-              {mode === "signin" ? "Daftar" : "Masuk"}
-            </button>
-          </p>
+          {allowRegister && (
+            <p className="text-center text-sm text-slate-500 mt-6">
+              {mode === "signin" ? "Belum punya akun? " : "Sudah punya akun? "}
+              <button
+                type="button"
+                onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+                className="text-primary font-medium hover:underline"
+              >
+                {mode === "signin" ? "Daftar" : "Masuk"}
+              </button>
+            </p>
+          )}
+          {!allowRegister && mode === "signup" && (
+            <p className="text-center text-sm text-red-500 mt-6">
+              Pendaftaran admin baru dinonaktifkan oleh administrator.
+              <button
+                type="button"
+                onClick={() => setMode("signin")}
+                className="text-primary font-medium hover:underline block mt-2 mx-auto"
+              >
+                Kembali ke Masuk
+              </button>
+            </p>
+          )}
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-6">
