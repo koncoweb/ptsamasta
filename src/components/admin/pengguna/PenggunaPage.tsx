@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Users, UserMinus, Shield, Search, RefreshCw, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Users, UserMinus, UserPlus, Shield, Search, RefreshCw, Loader2, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -34,6 +35,13 @@ export function PenggunaPage() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Modal State
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newRole, setNewRole] = useState<"admin" | "editor" | "user">("user");
+  const [addingUser, setAddingUser] = useState(false);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -93,6 +101,47 @@ export function PenggunaPage() {
     }
   };
 
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newEmail || !newPassword) {
+      toast.warning("Email dan password wajib diisi");
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.warning("Password minimal 6 karakter");
+      return;
+    }
+
+    setAddingUser(true);
+    try {
+      const { data: newUserId, error } = await supabase.rpc("create_new_user_by_admin", {
+        new_email: newEmail,
+        new_password: newPassword,
+        initial_role: newRole,
+      });
+      if (error) throw error;
+
+      // Prepend user locally
+      const newUserRecord: UserWithRole = {
+        id: newUserId,
+        email: newEmail,
+        role: newRole,
+        created_at: new Date().toISOString(),
+      };
+      setUsers((prev) => [newUserRecord, ...prev]);
+
+      toast.success(`Pengguna ${newEmail} berhasil dibuat`);
+      setShowAddModal(false);
+      setNewEmail("");
+      setNewPassword("");
+      setNewRole("user");
+    } catch (e: any) {
+      toast.error("Gagal menambahkan pengguna: " + e.message);
+    } finally {
+      setAddingUser(false);
+    }
+  };
+
   const filteredUsers = users.filter(
     (u) =>
       u.email.toLowerCase().includes(search.toLowerCase()) ||
@@ -100,7 +149,7 @@ export function PenggunaPage() {
   );
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-6 max-w-6xl relative">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Manajemen Pengguna</h1>
@@ -108,9 +157,14 @@ export function PenggunaPage() {
             Kelola hak akses admin, editor, dan pengguna untuk website PT Samasta Nusantara Digdaya
           </p>
         </div>
-        <Button onClick={fetchUsers} variant="outline" className="gap-2 shrink-0">
-          <RefreshCw className="h-4 w-4" /> Segarkan
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setShowAddModal(true)} className="gap-2 bg-primary hover:bg-primary/90 text-white">
+            <UserPlus className="h-4 w-4" /> Tambah Pengguna
+          </Button>
+          <Button onClick={fetchUsers} variant="outline" className="gap-2">
+            <RefreshCw className="h-4 w-4" /> Segarkan
+          </Button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
@@ -219,6 +273,111 @@ export function PenggunaPage() {
           </div>
         )}
       </div>
+
+      {/* Add User Modal */}
+      <AnimatePresence>
+        {showAddModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl border border-slate-200 shadow-xl w-full max-w-md p-6 relative"
+            >
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              
+              <div className="flex items-center gap-2 mb-4">
+                <UserPlus className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-bold text-slate-900">Tambah Pengguna Baru</h3>
+              </div>
+              
+              <form onSubmit={handleAddUser} className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="new-email">Alamat Email</Label>
+                  <Input
+                    id="new-email"
+                    type="email"
+                    placeholder="nama@snd.co.id"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-1.5">
+                  <Label htmlFor="new-password">Kata Sandi (Password)</Label>
+                  <Input
+                    id="new-password"
+                    type="password"
+                    placeholder="Minimal 6 karakter"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-1.5">
+                  <Label>Peran / Hak Akses</Label>
+                  <Select
+                    value={newRole}
+                    onValueChange={(val) => setNewRole(val as any)}
+                  >
+                    <SelectTrigger className="w-full border-slate-200">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">
+                        <span className="flex items-center gap-1.5 font-medium text-red-700">
+                          <Shield className="h-3.5 w-3.5" /> Admin
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="editor">
+                        <span className="flex items-center gap-1.5 font-medium text-blue-700">
+                          Editor
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="user">
+                        <span className="flex items-center gap-1.5 text-slate-600">
+                          User
+                        </span>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowAddModal(false)}
+                    disabled={addingUser}
+                  >
+                    Batal
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={addingUser}
+                    className="bg-primary hover:bg-primary/90 text-white"
+                  >
+                    {addingUser ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" /> Membuat...
+                      </>
+                    ) : (
+                      "Buat Pengguna"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
