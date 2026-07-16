@@ -68,10 +68,8 @@ export function useCmsPage<T>(slug: string): UseCmsPageResult<T> {
       
       const defaultData = getDefaults(slug);
       let contentVal = data.content ?? null;
-      console.log(`[useCmsPage] slug: ${slug}, defaultData:`, defaultData, `contentVal:`, contentVal);
       if (contentVal && defaultData) {
         contentVal = mergeDeep(defaultData, contentVal);
-        console.log(`[useCmsPage] Merged content:`, contentVal);
       } else if (!contentVal && defaultData) {
         contentVal = defaultData;
       }
@@ -155,7 +153,16 @@ export function useCmsPage<T>(slug: string): UseCmsPageResult<T> {
           .select("content, updated_at")
           .single();
         if (err) throw err;
-        setContentState(data.content as T);
+        
+        const defaultData = getDefaults(slug);
+        let contentVal = data.content ?? null;
+        if (contentVal && defaultData) {
+          contentVal = mergeDeep(defaultData, contentVal);
+        } else if (!contentVal && defaultData) {
+          contentVal = defaultData;
+        }
+
+        setContentState(contentVal as T);
         setUpdatedAt(data.updated_at);
         setStatus("ready");
         toast.success("Data awal berhasil dibuat");
