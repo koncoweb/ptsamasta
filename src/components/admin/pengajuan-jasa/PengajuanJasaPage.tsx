@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, RefreshCw, Mail, Phone, Calendar, Search, Building2, User, FileText, X } from "lucide-react";
+import { Loader2, RefreshCw, Mail, Phone, Calendar, Search, Building2, User, FileText, X, Clock, Settings, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 
@@ -11,11 +12,23 @@ interface Pengajuan {
   nama_lengkap: string;
   nama_perusahaan: string;
   email: string;
-  telepon: string;
-  kategori_layanan: string;
-  deskripsi_kebutuhan: string;
+  whatsapp: string;
+  category_slug: string;
+  scope_slug: string;
+  selected_services: string[];
+  deskripsi: string;
+  estimasi_waktu?: string;
+  status: string;
+  notes?: string;
   created_at: string;
 }
+
+const categoryMap: Record<string, string> = {
+  "pemeliharaan": "Pemeliharaan & Lingkungan",
+  "jasa-sdm": "Jasa Profesional & SDM",
+  "perdagangan": "Pengolahan & Perdagangan Besar",
+  "event-organizer": "Event Organizer & Media",
+};
 
 export function PengajuanJasaPage() {
   const [list, setList] = useState<Pengajuan[]>([]);
@@ -31,7 +44,12 @@ export function PengajuanJasaPage() {
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      setList(data || []);
+      
+      const mapped = (data || []).map((x) => ({
+        ...x,
+        selected_services: Array.isArray(x.selected_services) ? x.selected_services : [],
+      }));
+      setList(mapped);
     } catch (e: any) {
       toast.error("Gagal memuat data pengajuan: " + e.message);
     } finally {
@@ -48,7 +66,7 @@ export function PengajuanJasaPage() {
       p.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
       (p.nama_perusahaan || "").toLowerCase().includes(search.toLowerCase()) ||
       p.email.toLowerCase().includes(search.toLowerCase()) ||
-      p.kategori_layanan.toLowerCase().includes(search.toLowerCase())
+      (categoryMap[p.category_slug] || p.category_slug).toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -125,17 +143,17 @@ export function PengajuanJasaPage() {
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-slate-600">
                         <Phone className="h-3.5 w-3.5 text-slate-400" />
-                        <span>{p.telepon}</span>
+                        <span>{p.whatsapp}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-100">
-                        {p.kategori_layanan}
+                        {categoryMap[p.category_slug] || p.category_slug}
                       </span>
                     </td>
                     <td className="px-6 py-4 max-w-xs">
                       <p className="text-xs text-slate-600 line-clamp-2">
-                        {p.deskripsi_kebutuhan}
+                        {p.deskripsi}
                       </p>
                     </td>
                     <td className="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">
@@ -212,24 +230,47 @@ export function PengajuanJasaPage() {
                     <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Nomor Telepon / WA</span>
                     <div className="flex items-center gap-2 text-slate-900 font-medium bg-slate-50 p-2.5 rounded-lg border border-slate-100">
                       <Phone className="h-4 w-4 text-slate-400" />
-                      <a href={`https://wa.me/${selectedItem.telepon.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                        {selectedItem.telepon}
+                      <a href={`https://wa.me/${selectedItem.whatsapp.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        {selectedItem.whatsapp}
                       </a>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Kategori Layanan yang Diinginkan</span>
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Kategori Layanan Utama</span>
                   <div className="bg-blue-50/50 text-blue-900 font-semibold p-3 rounded-lg border border-blue-100">
-                    {selectedItem.kategori_layanan}
+                    {categoryMap[selectedItem.category_slug] || selectedItem.category_slug}
                   </div>
                 </div>
+
+                {selectedItem.selected_services.length > 0 && (
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Layanan Spesifik yang Dipilih</span>
+                    <div className="flex flex-wrap gap-1.5 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                      {selectedItem.selected_services.map((srv, idx) => (
+                        <Badge key={idx} variant="secondary" className="bg-white border-slate-200 text-slate-700">
+                          {srv}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {selectedItem.estimasi_waktu && (
+                  <div className="space-y-1">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Estimasi Waktu Pelaksanaan</span>
+                    <div className="flex items-center gap-2 text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                      <Clock className="h-4 w-4 text-slate-400" />
+                      {selectedItem.estimasi_waktu}
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-1">
                   <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Deskripsi Kebutuhan Detail</span>
                   <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 text-sm text-slate-700 whitespace-pre-line leading-relaxed max-h-60 overflow-y-auto">
-                    {selectedItem.deskripsi_kebutuhan}
+                    {selectedItem.deskripsi}
                   </div>
                 </div>
 
