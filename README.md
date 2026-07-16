@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# PT Samasta Nusantara Digdaya - Corporate Portal & Admin Panel
 
-## Project info
+Portal utama dan dashboard administrasi terpadu untuk PT Samasta Nusantara Digdaya, penyedia solusi terintegrasi di Indonesia untuk industri pengolahan, perdagangan besar, logistik, jasa profesional, dan event organizer.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## 🚀 Fitur Utama
 
-There are several ways of editing your application.
+### 1. Website Publik (Public Website)
+* **Beranda Dinamis**: Banner hero yang dapat dikustomisasi, pameran keunggulan perusahaan, dan integrasi artikel berita.
+* **Profil Perusahaan**: Informasi terstruktur mengenai Sejarah, Filosofi, Struktur Manajemen, dan Dokumen Legalitas resmi.
+* **Katalog Layanan**: Halaman komprehensif yang menampilkan 4 kategori utama dan sub-layanan spesifik.
+* **Formulir Penawaran Mandiri**: Alur interaktif bagi calon klien untuk memilih ruang lingkup layanan, memberikan deskripsi kebutuhan, dan mengirimkan pengajuan jasa.
 
-**Use Lovable**
+### 2. Dashboard Admin Panel (`/admin`)
+* **CMS Beranda & Halaman**: Kelola layout teks, urutan, gambar, dan tautan di semua halaman utama secara real-time.
+* **CRM Pengajuan Jasa**: Terima, telusuri detail, filter pencarian, dan hubungi langsung calon klien via shortcut WhatsApp.
+* **Manajemen Pengguna**: Kelola hak akses (Admin, Editor, User), hapus akun, dan tambahkan pengguna baru langsung dari dashboard.
+* **Pengaturan Sistem Global**: Atur visibilitas situs (mode pemeliharaan), pendaftaran admin baru, serta data kontak utama.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Tech Stack & Integrasi
 
-**Use your preferred IDE**
+* **Frontend**: React.js, TypeScript, Vite, Tailwind CSS, shadcn/ui.
+* **Database & Auth**: Supabase (PostgreSQL), Row Level Security (RLS), Supabase Auth SDK.
+* **Animasi**: Framer Motion.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 💻 Cara Menjalankan Lokal
 
-Follow these steps:
+### 1. Prasyarat
+Pastikan Node.js (versi terbaru) sudah terpasang.
 
+### 2. Kloning & Jalankan
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 1. Kloning repositori
+git clone https://github.com/koncoweb/ptsamasta.git
+cd ptsamasta
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# 2. Pasang dependensi
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Buat berkas .env.local di direktori root dan masukkan kredensial Supabase Anda:
+# VITE_SUPABASE_URL=https://<PROJECT_ID>.supabase.co
+# VITE_SUPABASE_ANON_KEY=<ANON_PUBLIC_KEY>
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Jalankan server dev lokal
 npm run dev
 ```
+Aplikasi akan dapat diakses secara lokal di **[http://localhost:8080](http://localhost:8080)**.
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📄 Catatan Rilis & Pelajaran Penting
+Seluruh detail riwayat pengembangan, perbaikan crash, hak izin RLS database, serta pelajaran penting yang kami ambil selama pengembangan terdokumentasi lengkap di berkas **[CHANGELOG.md](CHANGELOG.md)**.
